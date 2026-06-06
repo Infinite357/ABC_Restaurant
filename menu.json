@@ -1,0 +1,304 @@
+{
+  "proteins": [
+    {
+      "id": "chicken",
+      "name": "Chicken"
+    },
+    {
+      "id": "pork",
+      "name": "Pork"
+    },
+    {
+      "id": "beef",
+      "name": "Beef"
+    },
+    {
+      "id": "seafood",
+      "name": "Seafood"
+    },
+    {
+        "id": "egg",
+        "name": "Egg"
+    }
+  ],
+  "types": [
+    {
+      "id": "appetizer",
+      "name": "Appetizer"
+    },
+    {
+      "id": "entree",
+      "name": "Entree"
+    },
+    {
+      "id": "side",
+      "name": "Side"
+    },
+    {
+      "id": "drink",
+      "name": "Drink"
+    }
+  ],
+  "items": [
+    {
+      "id": "CHK001",
+      "name": "Almond Chicken",
+      "protein":"chicken",
+      "type": "entree",
+      "tags": ["chicken"],
+      "calories": 350,
+      "price": 8.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "CHK002",
+      "name": "Chicken with Broccoli",
+      "protein":"chicken",
+      "type": "entree",
+      "tags": ["chicken"],
+      "calories": 300,
+      "price": 8.49,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "CHK003",
+      "name": "Sweet and Sour Chicken",
+      "protein":"chicken",
+      "type": "entree",
+      "tags": ["chicken"],
+      "calories": 380,
+      "price": 8.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "CHK004",
+      "name": "General Tso's Chicken",
+      "protein":"chicken",
+      "type": "entree",
+      "tags": ["chicken", "spicy"],
+      "calories": 420,
+      "price": 9.49,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "CHK005",
+      "name": "Kung Pao Chicken",
+      "protein":"chicken",
+      "type": "entree",
+      "tags": ["chicken", "spicy"],
+      "calories": 380,
+      "price": 9.49,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "PRK001",
+      "name": "Braised Pork Belly",
+      "protein":"pork",
+      "type": "entree",
+      "tags": ["pork"],
+      "calories": 450,
+      "price": 10.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "PRK002",
+      "name": "Chinese BBQ Pork",
+      "protein":"pork",
+      "type": "entree",
+      "tags": ["pork"],
+      "calories": 380,
+      "price": 9.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "PRK003",
+      "name": "Mapo Tofu with Minced Pork",
+      "protein":"pork",
+      "type": "entree",
+      "tags": ["pork", "spicy"],
+      "calories": 320,
+      "price": 8.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "PRK004",
+      "name": "Smokey Pork with Cauliflower",
+      "protein":"pork",
+      "type": "entree",
+      "tags": ["pork"],
+      "calories": 340,
+      "price": 9.49,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "PRK005",
+      "name": "Szechuan Style Sauteed Pork",
+      "protein":"pork",
+      "type": "entree",
+      "tags": ["pork", "spicy"],
+      "calories": 360,
+      "price": 9.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "BEF001",
+      "name": "Braised Beef with Bamboo Shoots",
+      "protein":"beef",
+      "type": "entree",
+      "tags": ["beef"],
+      "calories": 380,
+      "price": 10.49,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "BEF002",
+      "name": "Sizzling Spicy Beef with Cummin",
+      "protein":"beef",
+      "type": "entree",
+      "tags": ["beef", "spicy"],
+      "calories": 400,
+      "price": 10.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "BEF003",
+      "name": "Beef with Chilli Pepper",
+      "protein":"beef",
+      "type": "entree",
+      "tags": ["beef", "spicy"],
+      "calories": 360,
+      "price": 9.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "SEA001",
+      "name": "Fish Fillet with Chilli Pepper",
+      "protein":"seafood",
+      "type": "entree",
+      "tags": ["seafood", "spicy"],
+      "calories": 320,
+      "price": 11.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "SEA002",
+      "name": "Steamed Sea Bass",
+      "protein":"seafood",
+      "type": "entree",
+      "tags": ["seafood"],
+      "calories": 280,
+      "price": 12.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "SEA003",
+      "name": "Crispy Crab",
+      "protein":"seafood",
+      "type": "entree",
+      "tags": ["seafood"],
+      "calories": 350,
+      "price": 13.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "SDE001",
+      "name": "Eggdrop Soup",
+      "protein":"egg",
+      "type": "side",
+      "tags": ["soup"],
+      "calories": 120,
+      "price": 4.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "SDE002",
+      "name": "White Rice",
+      "protein":null,
+      "type": "side",
+      "tags": ["rice"],
+      "calories": 200,
+      "price": 2.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "SDE003",
+      "name": "Wonton Soup",
+      "protein":"pork",
+      "type": "side",
+      "tags": ["soup"],
+      "calories": 180,
+      "price": 5.49,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "SDE004",
+      "name": "Pan Fried Dumplings",
+      "protein":"pork",
+      "type": "side",
+      "tags": ["side"],
+      "calories": 240,
+      "price": 6.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "DRK001",
+      "name": "Coke",
+      "protein":null,
+      "type": "drink",
+      "tags": ["drink"],
+      "calories": 140,
+      "price": 2.49,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "DRK002",
+      "name": "Fanta",
+      "protein":null,
+      "type": "drink",
+      "tags": ["drink"],
+      "calories": 150,
+      "price": 2.49,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "DRK003",
+      "name": "Ginger Ale",
+      "protein":null,
+      "type": "drink",
+      "tags": ["drink"],
+      "calories": 120,
+      "price": 2.49,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "APP001",
+      "name": "Cucumber Salad",
+      "protein": null,
+      "type": "appetizer",
+      "tags": ["vegetable", "salad"],
+      "calories": 120,
+      "price": 3.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "APP002",
+      "name": "Crab Rangoon",
+      "protein": null,
+      "type": "appetizer",
+      "tags": ["seafood", "crab"],
+      "calories": 240,
+      "price": 5.99,
+      "image": "/images/item.jpg"
+    },
+    {
+      "id": "APP003",
+      "name": "Eggrolls",
+      "protein": "egg",
+      "type": "appetizer",
+      "tags": ["fried"],
+      "calories": 200,
+      "price": 4.99,
+      "image": "/images/item.jpg"
+    }
+  ]
+}
