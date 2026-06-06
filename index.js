@@ -179,12 +179,8 @@ function calculatePayment() {
 function validatePayment(cardNumber, expiration, cvv) {
     cardNumber = cardNumber.replaceAll(" ", "");
 
-    if (cardNumber.length !== 16) {
-        return "Payment declined: card number must be 16 digits.";
-    }
-
-    if (cardNumber.length !== 16) {
-        return "Payment declined: card number must be 16 digits.";
+    if (cardNumber.length !== 16 || cardNumber.length !== 15) {
+        return "Payment declined: card number must be 15 or 16 digits.";
     }
 
     if (isNaN(cardNumber)) {
