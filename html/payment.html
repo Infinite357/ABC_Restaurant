@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Restaurant Payment Page</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111827;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #1f2937;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    .section {
+      background-color: #1f2937;
+      margin-bottom: 25px;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    h2 {
+      color: #60a5fa;
+    }
+
+    a {
+      display: inline-block;
+      margin: 8px;
+      padding: 12px 16px;
+      background-color: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+
+    a:hover {
+      background-color: #1d4ed8;
+    }
+
+    .payment-form {
+      margin-top: 15px;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .input-row label {
+      width: 140px;
+      font-weight: bold;
+    }
+
+    .input-row input {
+      width: 260px;
+      padding: 12px;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+    }
+
+    .card-preview {
+      margin-top: 15px;
+    }
+
+    #cardImage {
+      display: none;
+      width: 140px;
+      height: auto;
+      margin-top: 8px;
+      border-radius: 6px;
+    }
+
+    .submit-button {
+      padding: 12px 18px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background-color: #1d4ed8;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="section">
+  <h2>Payment Summary</h2>
+
+  <!-- PAYMENT_SUMMARY -->
+
+</div>
+
+<div class="section">
+  <h2>Payment Information</h2>
+
+  <form action="/validate-payment" method="GET" class="payment-form">
+
+    <div class="input-row">
+      <label for="cardNumber">Card Number:</label>
+      <input type="text"
+              id="cardNumber"
+              name="cardNumber"
+              type="text"
+              placeholder="Enter card number"
+              maxlength="16"
+              inputmode="numeric"
+              pattern="[0-9]*"
+      />
+    </div>
+
+    <div class="card-preview">
+      <p id="cardTypeText">Card type: Unknown</p>
+      <img id="cardImage" src="" alt="Card type preview">
+    </div>
+
+    <div class="input-row">
+      <label for="expiration">Expiration:</label>
+      <input
+              id="expiration"
+              name="expiration"
+              type="text"
+              placeholder="MMYY"
+              maxlength="4"
+              inputmode="numeric"
+              pattern="[0-9]*"
+      />
+    </div>
+
+    <div class="input-row">
+      <label for="cvv">CVV:</label>
+      <input
+              id="cvv"
+              name="cvv"
+              type="text"
+              placeholder="123"
+              maxlength="4"
+              inputmode="numeric"
+              pattern="[0-9]*"
+      />
+    </div>
+
+    <input
+            type="submit"
+            value="Validate Payment"
+            class="submit-button"
+    />
+
+  </form>
+</div>
+
+<div class="section">
+  <h2>Payment Result</h2>
+  <p><!-- PAYMENT_RESULT --></p>
+</div>
+
+<script>
+  const cardInput = document.getElementById("cardNumber");
+  const cardTypeText = document.getElementById("cardTypeText");
+  const cardImage = document.getElementById("cardImage");
+
+  cardInput.addEventListener("input", function() {
+    // Remove non-digits
+    let cardNumber = cardInput.value.replace(/\D/g, "");
+
+    // Limit to 16 digits
+    if (cardNumber.length > 16) {
+      cardNumber = cardNumber.substring(0, 16);
+    }
+
+    // Put cleaned value back into the input box
+    cardInput.value = cardNumber;
+
+    // Real-time card type display
+    if (cardNumber.startsWith("4")) {
+      cardTypeText.textContent = "Card type: Visa";
+      cardImage.src = "/images/visa.png";
+      cardImage.style.display = "block";
+    }
+    else if (cardNumber.startsWith("2") || cardNumber.startsWith("5")) {
+      cardTypeText.textContent = "Card type: Mastercard";
+      cardImage.src = "/images/mastercard.png";
+      cardImage.style.display = "block";
+    }
+    else if (cardNumber.startsWith("34") || cardNumber.startsWith("37")) {
+      cardTypeText.textContent = "Card type: American Express";
+      cardImage.src = "/images/amex.png";
+      cardImage.style.display = "block";
+    }
+    else if (cardNumber.startsWith("6")) {
+      cardTypeText.textContent = "Card type: Discover";
+      cardImage.src = "/images/discover.png";
+      cardImage.style.display = "block";
+    }
+    else {
+      cardTypeText.textContent = "Card type: Unknown";
+      cardImage.src = "";
+      cardImage.style.display = "none";
+    }
+  });
+</script>
+</body>
+</html>

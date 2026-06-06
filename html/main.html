@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ABC Restaurant Dashboard</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111827;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .food-card {
+      display: inline-block;
+      vertical-align: top;
+      margin: 0 8px;
+      text-align: center;
+    }
+
+    .food-img {
+      display: block;
+      width: 220px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin: 8px auto 0 auto;
+    }
+
+    header {
+      background-color: #1f2937;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    .section {
+      background-color: #1f2937;
+      margin-bottom: 25px;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    h2 {
+      color: #60a5fa;
+    }
+
+    a {
+      display: inline-block;
+      margin: 8px;
+      padding: 12px 16px;
+      background-color: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+
+    a:hover {
+      background-color: #1d4ed8;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="section">
+    <h2>Search Menu</h2>
+
+    <form action="/search" method="GET">
+      <label for="food"></label>
+
+      <input
+              id="food"
+              name="item"
+              type="text"
+              placeholder="Search for food..."
+      />
+
+      <input
+              type="submit"
+              value="Search"
+      />
+    </form>
+  </div>
+
+  <div class="section">
+    <h2>Search Options</h2>
+    <a href="cart">View Cart</a>
+    <a href="http://localhost:3000/payment">Fast Checkout</a>
+    <a href="#">B</a>
+  </div>
+
+  <div class="section">
+    <h2>Entrees</h2>
+    <a href="https://en.wikipedia.org/wiki/Almond_chicken" target="_blank">Almond Chicken</a>
+    <a href="https://en.wikipedia.org/wiki/Beef_and_broccoli" target="_blank">Beef & Broccoli</a>
+    <div class="food-card">
+      <a href="https://en.wikipedia.org/wiki/Chicken_and_broccoli" target="_blank">
+        Chicken & Broccoli
+      </a>
+      <img src="/images/chicken-with-broccoli-11.png" alt="Chicken and broccoli" class="food-img">
+    </div>
+    <a href="https://en.wikipedia.org/wiki/Crab_Rangoon" target="_blank">Crab Rangoon</a>
+    <a href="https://en.wikipedia.org/wiki/General_Tso%27s_chicken" target="_blank">General Tso's Chicken</a>
+
+  </div>
+
+  <div class="section">
+    <h2>Sides</h2>
+    <a href="https://en.wikipedia.org/wiki/Egg_drop_soup" target="_blank">Egg Drop Soup</a>
+    <a href="https://en.wikipedia.org/wiki/White_rice" target="_blank">White Rice</a>
+  </div>
+
+</div>
+</body>
+</html>
