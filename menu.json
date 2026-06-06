@@ -48,7 +48,7 @@
       "tags": ["chicken"],
       "calories": 350,
       "price": 8.99,
-      "image": "/images/item.jpg"
+      "image": "/images/almondchicken.jpg"
     },
     {
       "id": "CHK002",
@@ -58,7 +58,7 @@
       "tags": ["chicken"],
       "calories": 300,
       "price": 8.49,
-      "image": "/images/item.jpg"
+      "image": "/images/chickenwithbroccoli.jpg"
     },
     {
       "id": "CHK003",
@@ -68,7 +68,7 @@
       "tags": ["chicken"],
       "calories": 380,
       "price": 8.99,
-      "image": "/images/item.jpg"
+      "image": "/images/sweetandsourchicken.jpg"
     },
     {
       "id": "CHK004",
@@ -78,7 +78,7 @@
       "tags": ["chicken", "spicy"],
       "calories": 420,
       "price": 9.49,
-      "image": "/images/item.jpg"
+      "image": "/images/generaltsochicken.webp"
     },
     {
       "id": "CHK005",
@@ -88,7 +88,7 @@
       "tags": ["chicken", "spicy"],
       "calories": 380,
       "price": 9.49,
-      "image": "/images/item.jpg"
+      "image": "/images/kungpaochicken.jpg"
     },
     {
       "id": "PRK001",
@@ -98,7 +98,7 @@
       "tags": ["pork"],
       "calories": 450,
       "price": 10.99,
-      "image": "/images/item.jpg"
+      "image": "/images/braisedporkbelly.webp"
     },
     {
       "id": "PRK002",
@@ -108,7 +108,7 @@
       "tags": ["pork"],
       "calories": 380,
       "price": 9.99,
-      "image": "/images/item.jpg"
+      "image": "/images/bbqpork.jpg"
     },
     {
       "id": "PRK003",
@@ -118,7 +118,7 @@
       "tags": ["pork", "spicy"],
       "calories": 320,
       "price": 8.99,
-      "image": "/images/item.jpg"
+      "image": "/images/mapotofu.jpeg"
     },
     {
       "id": "PRK004",
@@ -128,7 +128,7 @@
       "tags": ["pork"],
       "calories": 340,
       "price": 9.49,
-      "image": "/images/item.jpg"
+      "image": "/images/smokeyporkwithcauliflower.jpeg"
     },
     {
       "id": "PRK005",
@@ -138,7 +138,7 @@
       "tags": ["pork", "spicy"],
       "calories": 360,
       "price": 9.99,
-      "image": "/images/item.jpg"
+      "image": "/images/szechuanstylesauteedpork.webp"
     },
     {
       "id": "BEF001",
@@ -148,7 +148,7 @@
       "tags": ["beef"],
       "calories": 380,
       "price": 10.49,
-      "image": "/images/item.jpg"
+      "image": "/images/braisedbeefwithbambooshoots.jpeg"
     },
     {
       "id": "BEF002",
@@ -158,7 +158,7 @@
       "tags": ["beef", "spicy"],
       "calories": 400,
       "price": 10.99,
-      "image": "/images/item.jpg"
+      "image": "/images/sizzlingspicybeef.jpg"
     },
     {
       "id": "BEF003",
@@ -168,7 +168,7 @@
       "tags": ["beef", "spicy"],
       "calories": 360,
       "price": 9.99,
-      "image": "/images/item.jpg"
+      "image": "/images/beefwithchillipepper.webp"
     },
     {
       "id": "SEA001",
@@ -178,7 +178,7 @@
       "tags": ["seafood", "spicy"],
       "calories": 320,
       "price": 11.99,
-      "image": "/images/item.jpg"
+      "image": "/images/fishfilletwithchillipepper.jpg"
     },
     {
       "id": "SEA002",
@@ -188,7 +188,7 @@
       "tags": ["seafood"],
       "calories": 280,
       "price": 12.99,
-      "image": "/images/item.jpg"
+      "image": "/images/steamedseabass.jpg"
     },
     {
       "id": "SEA003",
@@ -198,7 +198,7 @@
       "tags": ["seafood"],
       "calories": 350,
       "price": 13.99,
-      "image": "/images/item.jpg"
+      "image": "/images/crispycrab.jpg"
     },
     {
       "id": "SDE001",
@@ -208,7 +208,7 @@
       "tags": ["soup"],
       "calories": 120,
       "price": 4.99,
-      "image": "/images/item.jpg"
+      "image": "/images/eggdropsoup.jpg"
     },
     {
       "id": "SDE002",
@@ -218,7 +218,7 @@
       "tags": ["rice"],
       "calories": 200,
       "price": 2.99,
-      "image": "/images/item.jpg"
+      "image": "/images/whiterice.webp"
     },
     {
       "id": "SDE003",
@@ -228,7 +228,7 @@
       "tags": ["soup"],
       "calories": 180,
       "price": 5.49,
-      "image": "/images/item.jpg"
+      "image": "/images/wontonsoup.jpg"
     },
     {
       "id": "SDE004",
@@ -238,7 +238,7 @@
       "tags": ["side"],
       "calories": 240,
       "price": 6.99,
-      "image": "/images/item.jpg"
+      "image": "/images/panfrieddumplings.jpg"
     },
     {
       "id": "DRK001",
@@ -248,7 +248,7 @@
       "tags": ["drink"],
       "calories": 140,
       "price": 2.49,
-      "image": "/images/item.jpg"
+      "image": "/images/coke.webp"
     },
     {
       "id": "DRK002",
@@ -258,7 +258,7 @@
       "tags": ["drink"],
       "calories": 150,
       "price": 2.49,
-      "image": "/images/item.jpg"
+      "image": "/images/fanta.webp"
     },
     {
       "id": "DRK003",
@@ -268,7 +268,7 @@
       "tags": ["drink"],
       "calories": 120,
       "price": 2.49,
-      "image": "/images/item.jpg"
+      "image": "/images/gingerale.png"
     },
     {
       "id": "APP001",
@@ -278,7 +278,7 @@
       "tags": ["vegetable", "salad"],
       "calories": 120,
       "price": 3.99,
-      "image": "/images/item.jpg"
+      "image": "/images/cucumbersalad.jpg"
     },
     {
       "id": "APP002",
@@ -288,7 +288,7 @@
       "tags": ["seafood", "crab"],
       "calories": 240,
       "price": 5.99,
-      "image": "/images/item.jpg"
+      "image": "/images/crabrangoon.jpg"
     },
     {
       "id": "APP003",
@@ -298,7 +298,7 @@
       "tags": ["fried"],
       "calories": 200,
       "price": 4.99,
-      "image": "/images/item.jpg"
+      "image": "/images/eggrolls.jpg"
     }
   ]
 }
