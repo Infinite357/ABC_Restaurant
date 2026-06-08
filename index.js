@@ -104,19 +104,6 @@ server.on("request", function(req, res) {
         });
     }
 
-    else if (req.url === "/images/chicken-with-broccoli-11.png") {
-        fs.readFile("./images/chicken-with-broccoli-11.png", function(err, data) {
-            if (err) {
-                res.writeHead(404, {"Content-Type": "text/plain"});
-                res.end("Image not found.");
-                return;
-            }
-
-            res.writeHead(200, {"Content-Type": "image/png"});
-            res.end(data);
-        });
-    }
-
     else if (req.url.startsWith("/validate-payment")) {
         const urlObj = new URL(req.url, "http://localhost:3000");
 
@@ -154,6 +141,41 @@ server.on("request", function(req, res) {
             }
 
             res.writeHead(200, {"Content-Type": "image/png"});
+            res.end(data);
+        });
+    }
+
+    else if (req.url === "/menu.json") {
+        fs.readFile("./menu.json", "utf8", function(err, data) {
+            if (err) {
+                res.writeHead(404, {"Content-Type": "text/plain"});
+                res.end("Menu not found.");
+                return;
+            }
+
+            res.writeHead(200, {"Content-Type": "application/json"});
+            res.end(data);
+        });
+    }
+
+    else if (req.url.startsWith("/images/")) {
+        const filePath = "." + req.url;
+        const extension = req.url.substring(req.url.lastIndexOf(".") + 1).toLowerCase();
+        
+        let contentType = "application/octet-stream";
+        if (extension === "jpg" || extension === "jpeg") contentType = "image/jpeg";
+        else if (extension === "png") contentType = "image/png";
+        else if (extension === "webp") contentType = "image/webp";
+        else if (extension === "gif") contentType = "image/gif";
+
+        fs.readFile(filePath, function(err, data) {
+            if (err) {
+                res.writeHead(404, {"Content-Type": "text/plain"});
+                res.end("Image not found.");
+                return;
+            }
+
+            res.writeHead(200, {"Content-Type": contentType});
             res.end(data);
         });
     }
