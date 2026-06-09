@@ -159,11 +159,24 @@ server.on("request", function(req, res) {
     `);
     }
 
+    else if (req.url === "/js/cart.js") {
+        fs.readFile("./js/cart.js", function(err, data) {
+            if (err) {
+                res.writeHead(404, {"Content-Type": "text/plain"});
+                res.end("Cart JS not found.");
+                return;
+            }
+
+            res.writeHead(200, {"Content-Type": "application/javascript"});
+            res.end(data);
+        });
+    }
+
     else if (req.url === "/cart") {
         fs.readFile("./html/cart.html", function(err, data) {
             if (err) {
-                res.writeHead(500, {"Content-Type": "text/plain"});
-                res.end("Server error.");
+                res.writeHead(404, {"Content-Type": "text/plain"});
+                res.end("Cart page not found.");
                 return;
             }
 

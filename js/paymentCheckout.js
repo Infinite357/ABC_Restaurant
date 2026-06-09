@@ -9,25 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         <p id="pickupEstimate">Estimated Pickup Time: Calculating...</p>
 
-        <form id="paymentForm">
-            <input id="customerName" type="text" placeholder="Customer Name" required>
-            <br><br>
-
-            <input id="customerPhone" type="tel" placeholder="Phone Number" required>
-            <br><br>
-
-            <input id="cardNumber" type="text" placeholder="Credit Card Number" required>
-            <p>Card Type: <span id="cardTypeText">Unknown</span></p>
-
-            <input id="expiration" type="text" placeholder="MM/YY" maxlength="5" required>
-            <br><br>
-
-            <input id="cvv" type="text" placeholder="CVV" maxlength="3" required>
-            <br><br>
-
-            <button type="submit">Place Order</button>
-        </form>
-
         <p id="orderMessage"></p>
     `;
 
@@ -136,9 +117,6 @@ document.addEventListener("DOMContentLoaded", function () {
         estimate.prepMinutes +
         " minutes)";
 
-    cardNumberInput.addEventListener("input", function () {
-        cardTypeText.textContent = detectCardType(cardNumberInput.value);
-    });
 
     document.getElementById("expiration").addEventListener("input", function(event) {
         let value = event.target.value.replace(/\D/g, "").substring(0, 4);
