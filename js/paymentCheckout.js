@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
         cardTypeText.textContent = detectCardType(cardNumberInput.value);
     });
 
-    document.getElementById("expiration").addEventListener("input", function (event) {
+    document.getElementById("expiration").addEventListener("input", function(event) {
         let value = event.target.value.replace(/\D/g, "").substring(0, 4);
 
         if (value.length > 2) {
@@ -150,41 +150,5 @@ document.addEventListener("DOMContentLoaded", function () {
         event.target.value = value;
     });
 
-    paymentForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        const error = validatePaymentInfo();
-
-        if (error) {
-            orderMessage.textContent = error;
-            orderMessage.style.color = "red";
-            return;
-        }
-
-        const finalEstimate = calculatePickupTime();
-
-        const order = {
-            customerName: document.getElementById("customerName").value,
-            customerPhone: document.getElementById("customerPhone").value,
-            cardType: cardTypeText.textContent,
-            pickupTime: finalEstimate.pickupTime,
-            prepMinutes: finalEstimate.prepMinutes,
-            orderDate: new Date().toLocaleString()
-        };
-
-        const orders = JSON.parse(localStorage.getItem("orders")) || [];
-        orders.push(order);
-
-        localStorage.setItem("orders", JSON.stringify(orders));
-
-        orderMessage.textContent =
-            "Order placed successfully! Estimated pickup time: " +
-            finalEstimate.pickupTime;
-
-        orderMessage.style.color = "lightgreen";
-
-        paymentForm.reset();
-        cardTypeText.textContent = "Unknown";
-    });
 
 });

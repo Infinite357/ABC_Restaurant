@@ -25,15 +25,15 @@ server.on("request", function(req, res) {
         });
     }
 
-    else if (req.url === "/checkout") {
-        fs.readFile("./html/checkout.html", function(err, data) {
+    else if (req.url === "/js/paymentCheckout.js") {
+        fs.readFile("./js/paymentCheckout.js", function(err, data) {
             if (err) {
-                res.writeHead(500, {"Content-Type": "text/plain"});
-                res.end("Server error.");
+                res.writeHead(404, {"Content-Type": "text/plain"});
+                res.end("JavaScript file not found.");
                 return;
             }
 
-            res.writeHead(200, {"Content-Type": "text/html"});
+            res.writeHead(200, {"Content-Type": "application/javascript"});
             res.end(data);
         });
     }
@@ -150,6 +150,15 @@ server.on("request", function(req, res) {
         });
     }
 
+    else if (req.url === "/success") {
+        res.writeHead(200, {"Content-Type": "text/html"});
+        res.end(`
+        <h1>Payment Successful</h1>
+        <p>Your receipt has been emailed.</p>
+        <p><a href="/">Back to Home</a></p>
+    `);
+    }
+
     else if (req.url === "/cart") {
         fs.readFile("./html/cart.html", function(err, data) {
             if (err) {
@@ -255,7 +264,7 @@ function validatePayment(cardNumber, expiration, cvv, email) {
         return "Payment declined: card is expired.";
     }
 
-    if (cvv.length !== 3 ) {
+    if (cvv.length !== 3 && cvv.length !== 4) {
         return "Payment declined: CVV must be 3 or 4 digits.";
     }
 
