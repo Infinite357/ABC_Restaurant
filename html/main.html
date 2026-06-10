@@ -3,7 +3,7 @@
 
 <head>
   <title>ABC Restaurant Dashboard</title>
-
+  <link rel="icon" href="/images/RestrauntLogo.png" type="image/png">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,16 +13,9 @@
       padding: 0;
     }
 
-    .food-card {
-      display: inline-block;
-      vertical-align: top;
-      margin: 0 8px;
-      text-align: center;
-    }
-
     .food-img {
       display: block;
-      width: 220px;
+      width: 200px;
       height: 150px;
       object-fit: cover;
       border-radius: 8px;
@@ -32,7 +25,7 @@
     .food-card {
       display: inline-block;
       vertical-align: top;
-      margin: 12px 8px;
+      margin: 12px 12px;
       text-align: center;
       background-color: #111827;
       border: 1px solid #374151;
@@ -133,31 +126,37 @@
     <p id="cartMessage"></p>
 
     <div class="section">
-      <h2>Search Menu</h2>
+      <table width="100%">
+        <tr>
+          <td style="width: 120px;">
+            <img src="/images/RestrauntLogo.png" alt="RestrauntLogo" width="150">
+          </td>
+          <td align="left">
+            <h2 style="font-family: cursive; font-size: 50px;">ABC Restraunt</h2>
+          </td>
+          <td align="right">
+            <form action="/search" method="GET">
+            <label for="food"></label>
 
-      <form action="/search" method="GET">
-        <label for="food"></label>
+            <input id="food" name="item" type="text" placeholder="Search for food..." />
 
-        <input id="food" name="item" type="text" placeholder="Search for food..." />
-
-        <input type="submit" value="Search" />
-      </form>
+            <input type="submit" value="Search"/>
+            <a href="cart">View Cart</a>
+            <a href="http://localhost:3000/payment">Fast Checkout</a>
+            </form>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="section">
-      <h2>Quick Navigation</h2>
-      <a href="cart">View Cart</a>
-      <a href="http://localhost:3000/payment">Fast Checkout</a>
+      <h2 style="text-align: center;">Entrees</h2>
+      <div id="entrees-menu" style="text-align: center;"></div>
     </div>
 
     <div class="section">
-      <h2>Entrees</h2>
-      <div id="entrees-menu"></div>
-    </div>
-
-    <div class="section">
-      <h2>Sides</h2>
-      <div id="sides-menu"></div>
+      <h2 style="text-align: center;">Sides</h2>
+      <div id="sides-menu" style="text-align: center;"></div>
     </div>
 
   </div>
