@@ -32,23 +32,33 @@ function displayCart() {
         calories += item.calories * item.quantity;
 
         cartDiv.innerHTML += `
-    <div class="cart-item">
-        <img src="${item.image}" alt="${item.name}" class="cart-img">
-
-        <h3>${item.name}</h3>
-        <p>Quantity: ${item.quantity}</p>
-        <p>Price: $${item.price.toFixed(2)}</p>
-        <p>Calories: ${item.calories}</p>
-
-        <button class="submit-button" onclick="removeOneItem(${i})">
-            Remove One
-        </button>
-
-        <button class="submit-button" onclick="removeItem(${i})">
-            Remove Item
-        </button>
-    </div>
-`;
+        <div class="cart-item">
+            <table style="width:100%;">
+                <tr>
+                    <td align="left" style="width:220px;">
+                        <img src="${item.image}" alt="${item.name}" class="cart-img">
+                    </td>
+                    <td align="left" style="width:500px;">
+                        <h3>${item.name}</h3>
+                    </td>
+                    <td align="left" style="width:220px;">
+                        <p>Quantity: ${item.quantity}</p>
+                        <p>Price: $${item.price.toFixed(2)}</p>
+                        <p>Calories: ${item.calories}</p>
+                    </td>
+                    <td align="right">
+                        <button class="submit-button" onclick="removeOneItem(${i})">
+                            Remove One
+                        </button>
+                        <button class="submit-button" onclick="removeItem(${i})">
+                            Remove Item
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div> 
+        
+        `;
 
     }
 
