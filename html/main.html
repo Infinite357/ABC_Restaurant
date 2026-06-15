@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>ABC Restaurant Dashboard</title>
+  <title>ABC Restaurant</title>
   <link rel="icon" href="/images/RestrauntLogo.png" type="image/png">
   <style>
     body {
@@ -192,6 +192,17 @@
     </div>
 
     <div class="section">
+      <div style="text-align: left;">
+        <a href="/chicken">Chicken</a>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2 style ="text-align: center;">Appitizers</h2>
+      <div id="appitizers-menu" style="text-align: center;"></div>
+    </div>
+
+    <div class="section">
       <h2 style="text-align: center;">Entrees</h2>
       <div id="entrees-menu" style="text-align: center;"></div>
     </div>
@@ -212,6 +223,19 @@
         const menu = await response.json();
 
         menuData = menu.items;
+
+        const appitizersContainer = document.getElementById('appitizers-menu');
+        const appetizers = menuData.filter(item=>item.type === 'appetizer');
+
+        appitizersContainer.innerHTML = appetizers.map(item => `
+          <div class="food-card">
+            <img src="${item.image}" alt="${item.name}" class="food-img">
+            <div class="food-card-name">${item.name}</div>
+            <div class="food-card-details">${item.calories} cal</div>
+            <div class="food-card-price">$${item.price.toFixed(2)}</div>
+            <button onclick="addToCart('${item.id}')">Add to Cart</button>
+          </div>
+        `).join('');
 
         const entreesContainer = document.getElementById('entrees-menu');
         const entrees = menuData.filter(item => item.type === 'entree');
