@@ -1,6 +1,8 @@
 const cartDiv = document.getElementById("cart");
 const subtotalElement = document.getElementById("subtotal");
 const caloriesElement = document.getElementById("calories");
+const taxElement = document.getElementById("tax");
+const totalElement = document.getElementById("total");
 
 function loadCart() {
     return JSON.parse(localStorage.getItem("cart")) || [];
@@ -17,11 +19,15 @@ function displayCart() {
 
     let subtotal = 0;
     let calories = 0;
+    let tax = 0;
+    let total = 0;
 
     if (cart.length === 0) {
         cartDiv.innerHTML = "<p>Your cart is empty.</p>";
-        subtotalElement.textContent = "Subtotal: $0.00";
-        caloriesElement.textContent = "Calories: 0";
+        subtotalElement.textContent = " $0.00";
+        caloriesElement.textContent = "0 kcal";
+        taxElement.textContent = "$0.00";
+        totalElement.textContent = "$0.00";
         return;
     }
 
@@ -30,6 +36,8 @@ function displayCart() {
 
         subtotal += item.price * item.quantity;
         calories += item.calories * item.quantity;
+        tax = subtotal * 0.0887;
+        total = subtotal + (subtotal * 0.0887);
 
         cartDiv.innerHTML += `
         <div class="cart-item">
@@ -48,10 +56,10 @@ function displayCart() {
                     </td>
                     <td align="right">
                         <button class="submit-button" onclick="removeOneItem(${i})">
-                            Remove One
+                            - Remove One
                         </button>
                         <button class="submit-button" onclick="removeItem(${i})">
-                            Remove Item
+                            - Remove Item
                         </button>
                     </td>
                 </tr>
@@ -62,8 +70,11 @@ function displayCart() {
 
     }
 
-    subtotalElement.textContent = "Subtotal: $" + subtotal.toFixed(2);
-    caloriesElement.textContent = "Calories: " + calories;
+    subtotalElement.textContent = "$" + subtotal.toFixed(2);
+    caloriesElement.textContent = calories + " kcal";
+    taxElement.textContent = "$" + tax.toFixed(2);
+    totalElement.textContent = "$" + total.toFixed(2);
+
 }
 
 function removeOneItem(index) {

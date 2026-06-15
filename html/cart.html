@@ -103,25 +103,116 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      white-space: nowrap;
     }
 
     .submit-button:hover {
       background-color: #1d4ed8;
     }
+
+    .restrauntHeadingTable{
+      margin: auto;
+    }
+    .cartHeaingTable{
+      margin: auto;
+      width: 1000px;
+    }
+    .infoTableBorder{
+      width: 1000px;
+      margin: auto;
+      background-color: #111827;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      padding: 15px;
+      width: 1000px;
+    }
+
+    .infoTableBorder td{
+      
+      padding: 0px 150px;
+      white-space: nowrap;
+    }
+
   </style>
 </head>
 
 <body>
 
+<table class="restrauntHeadingTable">
+  <tr>
+    <td align="right">
+      <img src="/images/RestrauntLogo.png" alt="RestrauntLogo" width="150">
+    </td>
+    <td>
+      <h2 style="font-family: cursive; font-size: 50px;">ABC Restraunt</h2>
+    </td>
+  </tr>
+</table>
 
-<h1> Cart</h1>
+<table class="cartHeaingTable">
+  <tr>
+    <td align="left">
+      <h1> Cart</h1>
+    </td>
+    <td>
+      <img src="/images/CartLogo.png" alt="RestrauntLogo" width="150">
+    </td>
+    <td style="width: 30%;">
+
+    </td>
+    <td style="width:50%" align="right">
+      <a class="submit-button link-button" href="/">+ Add more items</a>
+    </td>
+  </tr>
+</table>
+
 
 <div id="cart"></div>
 
-<h2 id="subtotal"></h2>
-<h2 id="calories"></h2>
 
-<a class="submit-button link-button" href="/">Add more items to cart</a>
+
+<table class="infoTableBorder">
+  
+  <tr>
+    <td align="left">
+      <h2>Total Calories:</h2>
+    </td>
+    <td align="right">
+      <h2 id="calories"></h2>
+    </td>
+  </tr>
+  
+  <tr>
+    <td align="left">
+      <h2>Subtotal:</h2>
+    </td>
+    <td align="right">
+      <h2 id="subtotal"></h2>
+    </td>
+  </tr>
+ 
+  <tr>
+    <td align="left">
+      <h2>Tax:</h2>
+    </td>
+    <td align="right">
+      <h2 id="tax"></h2>
+    </td>
+  </tr>
+
+  <tr>
+    <td align="left">
+      <h2>Total:</h2>
+    </td>
+    <td align="right">
+      <h2 id="total"></h2>
+    </td>
+  </tr>
+
+</table>
+
+
+
 
 <button class="submit-button" onclick="clearCart()">Clear Cart</button>
 
