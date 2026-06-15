@@ -120,6 +120,8 @@
 
   <form action="/validate-payment" method="POST" class="payment-form">
 
+    <input type="hidden" id="cartData" name="cartData">
+
     <div class="input-row">
       <label for="cardNumber">Card Number:</label>
       <input
@@ -188,10 +190,6 @@
 
 </div>
 
-<div class="section">
-  <h2>Payment Result</h2>
-  <p><!-- PAYMENT_RESULT --></p>
-</div>
 <script src="/js/paymentCheckout.js"></script>  
 <script>
   const cardInput = document.getElementById("cardNumber");
@@ -237,6 +235,40 @@
       cardImage.style.display = "none";
     }
   });
+
+  function updatePaymentSummary() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    let subtotal = 0;
+
+    for (let i = 0; i < cart.length; i++) {
+      subtotal += cart[i].price * cart[i].quantity;
+    }
+
+    const taxRate = 0.08875;
+    const tax = subtotal * taxRate;
+    const total = subtotal + tax;
+
+    document.getElementById("paymentSubtotal").textContent =
+            "Subtotal: $" + subtotal.toFixed(2);
+
+    document.getElementById("paymentTax").textContent =
+            "Tax: $" + tax.toFixed(2);
+
+    document.getElementById("paymentTotal").textContent =
+            "Total: $" + total.toFixed(2);
+  }
+
+  const paymentForm = document.querySelector(".payment-form");
+
+  paymentForm.addEventListener("submit", function() {
+    document.getElementById("cartData").value =
+            localStorage.getItem("cart") || "[]";
+  });
+
+  updatePaymentSummary();
+
+
 
 </script>
 
