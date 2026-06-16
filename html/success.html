@@ -73,32 +73,46 @@
 </div>
 
 <script>
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    function calculatePickupTime() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    let totalQuantity = 0;
+        let totalItems = 0;
 
-    for (let i = 0; i < cart.length; i++) {
-        totalQuantity += cart[i].quantity;
+        for (let i = 0; i < cart.length; i++) {
+            totalItems += cart[i].quantity || 1;
+        }
+
+        let prepMinutes;
+
+        if (totalItems <= 3) {
+            prepMinutes = 15;
+        } else if (totalItems <= 6) {
+            prepMinutes = 25;
+        } else if (totalItems <= 10) {
+            prepMinutes = 35;
+        } else {
+            prepMinutes = 50;
+        }
+
+        const pickupTime = new Date();
+        pickupTime.setMinutes(pickupTime.getMinutes() + prepMinutes);
+
+        return {
+            prepMinutes: prepMinutes,
+            pickupTime: pickupTime.toLocaleTimeString([], {
+                hour: "numeric",
+                minute: "2-digit"
+            })
+        };
     }
 
-    const baseWaitTime = 15;
-    const minutesPerItem = 5;
-
-    const waitMinutes = baseWaitTime + (totalQuantity * minutesPerItem);
-
-    const pickupDate = new Date();
-    pickupDate.setMinutes(pickupDate.getMinutes() + waitMinutes);
-
-    const formattedPickupTime = pickupDate.toLocaleTimeString([], {
-        hour: "numeric",
-        minute: "2-digit"
-    });
+    const estimate = calculatePickupTime();
 
     document.getElementById("waitTime").textContent =
-        "Estimated wait time: " + waitMinutes + " minutes";
+        "Estimated wait time: " + estimate.prepMinutes + " minutes";
 
     document.getElementById("pickupTime").textContent =
-        "Estimated pickup time: " + formattedPickupTime;
+        "Estimated pickup time: " + estimate.pickupTime;
 
     localStorage.removeItem("cart");
 </script>

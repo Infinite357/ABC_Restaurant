@@ -346,7 +346,7 @@ function sendReceiptEmail(email, cart, callback) {
             address: process.env.EMAIL_USER
         },
         to: email,
-        subject: "Your Restaurant Receipt",
+        subject: "ABC Restaurant Receipt",
         text:
             "Thank you for your order.\n\n" +
             "Your payment was processed successfully.\n" +
@@ -356,11 +356,11 @@ function sendReceiptEmail(email, cart, callback) {
             <div style="max-width:600px; margin:auto; font-family:Arial,sans-serif; border:1px solid #ddd; border-radius:10px; overflow:hidden;">
 
                 <div style="background:#2563eb; color:white; padding:20px; text-align:center;">
-                    <h1>Restaurant Receipt</h1>
+                    <h1>ABC Restaurant</h1>
                 </div>
 
                 <div style="padding:20px;">
-                    <p>Hello,</p>
+                    <p>Valued Customer,</p>
 
                     <p>
                         Thank you for dining with us.
