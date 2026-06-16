@@ -38,6 +38,13 @@
       margin-bottom: 10px;
     }
 
+    #cartMessage {
+      text-align: left;
+      color: #22c55e;
+      font-weight: bold;
+      min-height: 24px;
+    }
+
     #cart {
       display: flex;
       flex-wrap: wrap;
@@ -137,7 +144,7 @@
 </head>
 
 <body>
-
+  <p id="cartMessage"></p>
 <table class="restrauntHeadingTable">
   <tr>
     <td align="right">
@@ -216,6 +223,6 @@
 
 <button class="submit-button" onclick="clearCart()">Clear Cart</button>
 
-<a class="submit-button link-button" href="/payment">Checkout</a>
+<a class="submit-button link-button" href="/payment" onclick="return canPay()">Checkout</a>
 
 <script src="/js/cart.js"></script>

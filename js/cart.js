@@ -104,4 +104,21 @@ function clearCart() {
     displayCart();
 }
 
+function canPay()
+    {
+      const cart = JSON.parse(localStorage.getItem("cart"));
+      if (cart === null || cart.length === 0)
+      {
+        const cartMessage = document.getElementById("cartMessage");
+        console.log("Cart is Empty, Cannot Checkout.");
+        cartMessage.textContent = "Cart is Empty, Cannot Proceed to Checkout!!";
+        setTimeout(function() {
+          cartMessage.textContent = "";
+        }, 2000);
+        return false;
+      } else {
+        return true;
+      }
+    }
+
 displayCart();
