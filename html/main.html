@@ -289,8 +289,18 @@
         return String(existingItem.id) === String(item.id);
       });
 
+      const cartMessage = document.getElementById("cartMessage");
+
+
       if (cartItem) {
+        if (cartItem.quantity < 10)
+      {
+        
         cartItem.quantity++;
+        cartMessage.textContent = item.name + " added to cart!";
+      } else {
+        cartMessage.textContent = " Maximum limit reached!";
+      }
       } else {
         cart.push({
           id: item.id,
@@ -300,6 +310,7 @@
           image: item.image,
           quantity: 1
         });
+        cartMessage.textContent = item.name + " added to cart!";
       }
 
       localStorage.setItem("cart", JSON.stringify(cart));
@@ -308,9 +319,9 @@
 
       console.log("Cart is now:", cart);
 
-      const cartMessage = document.getElementById("cartMessage");
 
-      cartMessage.textContent = item.name + " added to cart!";
+
+      
 
       setTimeout(function() {
         cartMessage.textContent = "";
