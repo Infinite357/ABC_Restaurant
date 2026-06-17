@@ -131,9 +131,10 @@
                 </td>
             </tr>
         </table>
+
     </div>
     <div class="section">
-        <div id="chicken-menu" style="text-align: center;"></div>
+        <div id="seafood-menu" style="text-align: center;"></div>
     </div>
 
     <div class = "section">
@@ -144,30 +145,62 @@
 
     <script>
         async function loadMenuItems() {
-      try {
-        const response = await fetch('/menu.json');
-        const menu = await response.json();
+            try {
+                const response = await fetch('/menu.json');
+                const menu = await response.json();
 
-        menuData = menu.items;
+                const menuData = menu.items;
+                const proteinContainer = document.getElementById('seafood-menu');
+                const proteinItems = menuData.filter(item => item.id.startsWith('SEA'));
 
-        const chickenContainer = document.getElementById('chicken-menu');
-        const chickenItems = menuData.filter(item=>item.id.startsWith('CHK'));
+                proteinContainer.innerHTML = proteinItems.map(item => `
+                    <div class="food-card">
+                        <img src="${item.image}" alt="${item.name}" class="food-img">
+                        <div class="food-card-name">${item.name}</div>
+                        <div class="food-card-details">${item.calories} cal</div>
+                        <div class="food-card-price">$${item.price.toFixed(2)}</div>
+                        <button onclick="addToCart('${item.id}')">Add to Cart</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading menu:', error);
+            }
+        }
 
-        chickenContainer.innerHTML = chickenItems.map(item => `
-          <div class="food-card">
-            <img src="${item.image}" alt="${item.name}" class="food-img">
-            <div class="food-card-name">${item.name}</div>
-            <div class="food-card-details">${item.calories} cal</div>
-            <div class="food-card-price">$${item.price.toFixed(2)}</div>
-            <button onclick="addToCart('${item.id}')">Add to Cart</button>
-          </div>
-        `).join('');
-        } catch (error) {
-        console.error('Error loading menu:', error);
-      }
-    }
+        function addToCart(itemId) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            fetch('/menu.json')
+                .then(response => response.json())
+                .then(menu => {
+                    const item = menu.items.find(i => i.id === itemId);
+                    if (!item) {
+                        alert('Item not found');
+                        return;
+                    }
 
-    document.addEventListener('DOMContentLoaded', loadMenuItems);
+                    const cartItem = cart.find(i => i.id === item.id);
+                    if (cartItem) {
+                        cartItem.quantity += 1;
+                    } else {
+                        cart.push({
+                            id: item.id,
+                            name: item.name,
+                            price: item.price,
+                            calories: item.calories,
+                            image: item.image,
+                            quantity: 1
+                        });
+                    }
+
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    alert(item.name + ' added to cart!');
+                })
+                .catch(error => {
+                    console.error('Error adding to cart:', error);
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadMenuItems);
     </script>
 </body>
 

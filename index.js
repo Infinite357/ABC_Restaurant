@@ -25,8 +25,9 @@ server.on("request", function(req, res) {
         });
     }
 
-    else if(req.url === "/chicken"){
-        fs.readFile("./html/chicken.html", function(err, data){
+    else if(["chicken", "pork", "beef", "seafood"].includes(req.url.substring(1))){
+        const protein = req.url.substring(1);
+        fs.readFile(`./html/${protein}.html`, function(err, data){
             if(err){
                 res.writeHead(500, {"Content-Type": "text/plain"});
                 res.end("Server error");
