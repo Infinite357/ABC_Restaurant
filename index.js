@@ -422,7 +422,7 @@ function sendReceiptEmail(email, cart, callback) {
             return;
         }
 
-        console.log("Email sent:", info.messageId);
+        console.log("Email sent:", mailOptions.email);
         callback(null);
     });
 }
