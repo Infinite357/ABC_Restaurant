@@ -184,7 +184,7 @@
 
             <input type="submit" value="Search"/>
             <a href="cart">View Cart</a>
-            <a href="http://localhost:3000/payment">Fast Checkout</a>
+            <a href="http://localhost:3000/payment" onclick="return canPay()">Fast Checkout</a>
             </form>
           </td>
         </tr>
@@ -194,6 +194,9 @@
     <div class="section">
       <div style="text-align: left;">
         <a href="/chicken">Chicken</a>
+        <a href="/pork">Pork</a>
+        <a href="/beef">Beef</a>
+        <a href="/seafood">Seafood</a>
       </div>
     </div>
     
@@ -289,8 +292,18 @@
         return String(existingItem.id) === String(item.id);
       });
 
+      const cartMessage = document.getElementById("cartMessage");
+
+
       if (cartItem) {
+        if (cartItem.quantity < 10)
+      {
+        
         cartItem.quantity++;
+        cartMessage.textContent = item.name + " added to cart!";
+      } else {
+        cartMessage.textContent = " Maximum limit reached!";
+      }
       } else {
         cart.push({
           id: item.id,
@@ -300,6 +313,7 @@
           image: item.image,
           quantity: 1
         });
+        cartMessage.textContent = item.name + " added to cart!";
       }
 
       localStorage.setItem("cart", JSON.stringify(cart));
@@ -308,9 +322,9 @@
 
       console.log("Cart is now:", cart);
 
-      const cartMessage = document.getElementById("cartMessage");
 
-      cartMessage.textContent = item.name + " added to cart!";
+
+      
 
       setTimeout(function() {
         cartMessage.textContent = "";
@@ -350,6 +364,24 @@
         cartDockItems.innerHTML = "<p>Your cart is empty.</p>";
       }
     }
+    
+    function canPay()
+    {
+      const cart = JSON.parse(localStorage.getItem("cart"));
+      if (cart === null || cart.length === 0)
+      {
+        const cartMessage = document.getElementById("cartMessage");
+        console.log("Cart is Empty, Cannot Checkout.");
+        cartMessage.textContent = "Cart is Empty, Cannot Proceed to Checkout!!";
+        setTimeout(function() {
+          cartMessage.textContent = "";
+        }, 2000);
+        return false;
+      } else {
+        return true;
+      }
+    }
+
   </script>
 </body>
 

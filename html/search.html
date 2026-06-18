@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Search Results - ABC Restaurant</title>
+  <link rel="icon" href="/images/RestrauntLogo.png" type="image/png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111827;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .food-img {
+      display: block;
+      width: 200px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin: 8px auto 0 auto;
+    }
+
+    .food-card {
+      display: inline-block;
+      vertical-align: top;
+      margin: 12px 12px;
+      text-align: center;
+      background-color: #111827;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      padding: 12px;
+      width: 200px;
+      transition: transform 0.2s;
+    }
+
+    .food-card:hover {
+      transform: translateY(-4px);
+      border-color: #60a5fa;
+    }
+
+    .food-card-name {
+      font-weight: bold;
+      color: #e5e7eb;
+      margin: 8px 0 4px 0;
+      font-size: 14px;
+    }
+
+    .food-card-details {
+      color: #9ca3af;
+      font-size: 12px;
+      margin: 4px 0;
+    }
+
+    .food-card-price {
+      color: #60a5fa;
+      font-weight: bold;
+      font-size: 14px;
+      margin: 8px 0;
+    }
+
+    .food-card button {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .food-card button:hover {
+      background-color: #1d4ed8;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    .section {
+      background-color: #1f2937;
+      margin-bottom: 25px;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .section h2 {
+      color: #60a5fa;
+      margin-top: 0;
+    }
+
+    .search-form {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .search-form input[type="text"] {
+      flex: 1 1 240px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #374151;
+      background: #111827;
+      color: white;
+    }
+
+    .search-form input[type="submit"] {
+      padding: 10px 16px;
+      border-radius: 6px;
+      border: none;
+      background-color: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+
+    .search-form input[type="submit"]:hover {
+      background-color: #1d4ed8;
+    }
+
+    .search-results {
+      text-align: center;
+    }
+
+    .back-link {
+      color: white;
+      text-decoration: none;
+      background: #2563eb;
+      padding: 10px 16px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .back-link:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="section">
+      <h2>Search Menu</h2>
+      <form id="search-form" class="search-form" action="/search" method="GET">
+        <input id="search-input" name="item" type="text" placeholder="Search for food..." autocomplete="off" />
+        <input type="submit" value="Search" />
+      </form>
+      <a href="/" class="back-link">Back to Home</a>
+    </div>
+
+    <div class="section search-results">
+      <h2 id="results-title">Search Results</h2>
+      <div id="search-results"></div>
+    </div>
+  </div>
+
+  <script>
+    function getSearchQuery() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('item') ? params.get('item').trim() : '';
+    }
+
+    function addToCart(itemId) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      fetch('/menu.json')
+        .then(response => response.json())
+        .then(menu => {
+          const item = menu.items.find(i => i.id === itemId);
+          if (!item) {
+            alert('Item not found');
+            return;
+          }
+
+          const cartItem = cart.find(i => i.id === item.id);
+          if (cartItem) {
+            cartItem.quantity += 1;
+          } else {
+            cart.push({
+              id: item.id,
+              name: item.name,
+              price: item.price,
+              calories: item.calories,
+              image: item.image,
+              quantity: 1
+            });
+          }
+
+          localStorage.setItem('cart', JSON.stringify(cart));
+          alert(item.name + ' added to cart!');
+        })
+        .catch(error => console.error('Error adding to cart:', error));
+    }
+
+    function renderResults(items, query) {
+      const resultsContainer = document.getElementById('search-results');
+      const title = document.getElementById('results-title');
+      const normalizedQuery = query ? `for "${query}"` : '';
+      title.textContent = query ? `Search Results ${normalizedQuery}` : 'Search Results';
+
+      if (!items.length) {
+        resultsContainer.innerHTML = `<p>No items matched your search.</p>`;
+        return;
+      }
+
+      resultsContainer.innerHTML = items.map(item => `
+        <div class="food-card">
+          <img src="${item.image}" alt="${item.name}" class="food-img" />
+          <div class="food-card-name">${item.name}</div>
+          <div class="food-card-details">${item.calories} cal</div>
+          <div class="food-card-price">$${item.price.toFixed(2)}</div>
+          <button onclick="addToCart('${item.id}')">Add to Cart</button>
+        </div>
+      `).join('');
+    }
+
+    function performSearch() {
+      const query = getSearchQuery().toLowerCase();
+      document.getElementById('search-input').value = query;
+
+      if (!query) {
+        renderResults([], query);
+        return;
+      }
+
+      fetch('/menu.json')
+        .then(response => response.json())
+        .then(menu => {
+          const results = menu.items.filter(item => {
+            const normalized = [item.name, item.id, item.protein, item.type]
+              .filter(Boolean)
+              .map(value => value.toLowerCase());
+
+            return resultsMatch(normalized, query);
+          });
+
+          renderResults(results, query);
+        })
+        .catch(error => {
+          console.error('Search error:', error);
+          document.getElementById('search-results').innerHTML = '<p>Error loading search results.</p>';
+        });
+    }
+
+    function resultsMatch(values, query) {
+      return values.some(value => value.includes(query));
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      performSearch();
+    });
+  </script>
+</body>
+
+</html>

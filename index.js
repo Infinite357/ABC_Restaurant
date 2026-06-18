@@ -24,8 +24,9 @@ server.on("request", function(req, res) {
         });
     }
 
-    else if(req.url === "/chicken"){
-        fs.readFile("./html/chicken.html", function(err, data){
+    else if(["chicken", "pork", "beef", "seafood"].includes(req.url.substring(1))){
+        const protein = req.url.substring(1);
+        fs.readFile(`./html/${protein}.html`, function(err, data){
             if(err){
                 res.writeHead(500, {"Content-Type": "text/plain"});
                 res.end("Server error");
@@ -223,6 +224,24 @@ server.on("request", function(req, res) {
             }
 
             res.writeHead(200, {"Content-Type": "application/json"});
+            res.end(data);
+        });
+    }
+//Implementing search 
+    else if (req.url.startsWith("/search")) {
+        const urlParts = req.url.split("?");
+        const queryString = urlParts[1] || "";
+        const params = new URLSearchParams(queryString);
+        const searchTerm = params.get("item") || "";
+
+        fs.readFile("./html/search.html", "utf8", function(err, data) {
+            if (err) {
+                res.writeHead(500, {"Content-Type": "text/plain"});
+                res.end("Server error.");
+                return;
+            }
+
+            res.writeHead(200, {"Content-Type": "text/html"});
             res.end(data);
         });
     }
