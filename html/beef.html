@@ -151,9 +151,9 @@
 
                 const menuData = menu.items;
                 const proteinContainer = document.getElementById('beef-menu');
-                const proteinItems = menuData.filter(item => item.id.startsWith('BEF'));
+                const beefItems = menuData.filter(item => item.protein === "beef"); 
 
-                proteinContainer.innerHTML = proteinItems.map(item => `
+                proteinContainer.innerHTML = beefItems.map(item => `
                     <div class="food-card">
                         <img src="${item.image}" alt="${item.name}" class="food-img">
                         <div class="food-card-name">${item.name}</div>

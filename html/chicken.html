@@ -151,7 +151,7 @@
         menuData = menu.items;
 
         const chickenContainer = document.getElementById('chicken-menu');
-        const chickenItems = menuData.filter(item=>item.id.startsWith('CHK'));
+        const chickenItems = menuData.filter(item => item.protein === "chicken"); 
 
         chickenContainer.innerHTML = chickenItems.map(item => `
           <div class="food-card">
