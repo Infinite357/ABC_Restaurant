@@ -116,6 +116,7 @@
       background-color: #2563eb;
       color: white;
       cursor: pointer;
+      
     }
 
     .search-form input[type="submit"]:hover {
@@ -147,7 +148,7 @@
     <div class="section">
       <h2>Search Menu</h2>
       <form id="search-form" class="search-form" action="/search" method="GET">
-        <input id="search-input" name="item" type="text" placeholder="Search for food..." autocomplete="off" />
+        <input maxlength = 100 id="search-input" name="item" type="text" placeholder="Search for food..." autocomplete="off" />
         <input type="submit" value="Search" />
       </form>
       <a href="/" class="back-link">Back to Home</a>
