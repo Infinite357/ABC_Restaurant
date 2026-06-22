@@ -86,7 +86,7 @@
       display: none;
       width: 140px;
       height: auto;
-      margin-top: 8px;
+      margin: 8px auto 0 auto;
       border-radius: 6px;
     }
 
@@ -108,6 +108,9 @@
 
 <body>
 
+<!-- Payment summary section.
+     The server replaces PAYMENT_SUMMARY with placeholder elements.
+     Browser JavaScript fills those elements using the cart from localStorage. -->
 <div class="section">
   <h2>Payment Summary</h2>
 
@@ -118,10 +121,18 @@
 <div class="section">
   <h2>Payment Information</h2>
 
+  <!-- Payment form sends payment information to the server using POST.
+       POST keeps payment data out of the URL. -->
   <form action="/validate-payment" method="POST" class="payment-form">
 
+    <!-- Hidden input used to send cart data to the server.
+         The server cannot directly access browser localStorage,
+         so JavaScript copies the cart into this field before submission. -->
     <input type="hidden" id="cartData" name="cartData">
 
+    <!-- Card number input.
+         inputmode and pattern help the browser prefer numeric input,
+         but server-side validation still performs the real validation. -->
     <div class="input-row">
       <label for="cardNumber">Card Number:</label>
       <input
@@ -136,11 +147,14 @@
       />
     </div>
 
+    <!-- Displays detected card type and card image preview. -->
     <div class="card-preview">
       <p id="cardTypeText">Card type: Unknown</p>
       <img id="cardImage" src="" alt="Card type preview">
     </div>
 
+    <!-- Expiration date input.
+         paymentCheckout.js can format values like 1230 into 12/30. -->
     <div class="input-row">
       <label for="expiration">Expiration:</label>
       <input
@@ -153,6 +167,7 @@
       />
     </div>
 
+    <!-- CVV input. -->
     <div class="input-row">
       <label for="cvv">CVV:</label>
       <input
@@ -167,6 +182,7 @@
       />
     </div>
 
+    <!-- Email address used for the receipt email. -->
     <div class="input-row">
       <label for="email">Email Address</label>
       <input
@@ -186,29 +202,33 @@
     />
 
   </form>
-
-
 </div>
 
-<script src="/js/paymentCheckout.js"></script>  
+<!-- External JavaScript for extra payment page behavior,
+     such as expiration date formatting and pickup estimate display. -->
+<script src="/js/paymentCheckout.js"></script>
+
 <script>
+  // Get references to card input and card preview elements.
   const cardInput = document.getElementById("cardNumber");
   const cardTypeText = document.getElementById("cardTypeText");
   const cardImage = document.getElementById("cardImage");
 
+  // Runs every time the user types in the card number field.
   cardInput.addEventListener("input", function() {
-    // Remove non-digits
+    // Remove anything that is not a digit.
     let cardNumber = cardInput.value.replace(/\D/g, "");
 
-    // Limit to 16 digits
+    // Limit card number to 16 digits.
     if (cardNumber.length > 16) {
       cardNumber = cardNumber.substring(0, 16);
     }
 
-    // Put cleaned value back into the input box
+    // Put the cleaned card number back into the input box.
     cardInput.value = cardNumber;
 
-    // Real-time card type display
+    // Detect card type based on the starting digits.
+    // Then update the card type text and card image preview.
     if (cardNumber.startsWith("4")) {
       cardTypeText.textContent = "Card type: Visa";
       cardImage.src = "/images/visa.png";
@@ -236,19 +256,23 @@
     }
   });
 
+  // Reads cart data from localStorage and updates the payment summary.
   function updatePaymentSummary() {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     let subtotal = 0;
 
+    // Calculate subtotal from price * quantity for every cart item.
     for (let i = 0; i < cart.length; i++) {
       subtotal += cart[i].price * cart[i].quantity;
     }
 
+    // Calculate tax and final total.
     const taxRate = 0.08875;
     const tax = subtotal * taxRate;
     const total = subtotal + tax;
 
+    // Display subtotal, tax, and total on the payment page.
     document.getElementById("paymentSubtotal").textContent =
             "Subtotal: $" + subtotal.toFixed(2);
 
@@ -259,17 +283,18 @@
             "Total: $" + total.toFixed(2);
   }
 
+  // Get the payment form.
   const paymentForm = document.querySelector(".payment-form");
 
+  // Before submitting the form, copy the cart from localStorage into cartData.
+  // This allows index.js to receive the cart with the rest of the form data.
   paymentForm.addEventListener("submit", function() {
     document.getElementById("cartData").value =
             localStorage.getItem("cart") || "[]";
   });
 
+  // Update payment summary when the payment page first loads.
   updatePaymentSummary();
-
-
-
 </script>
 
 </body>

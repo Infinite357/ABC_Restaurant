@@ -1,16 +1,29 @@
+// Import Node.js built-in modules
+// http lets us create the web server
+// fs lets us read files such as HTML, JS, images, and JSON
 const http = require("http");
 const fs = require("fs");
+
+// Server will run locally on port 3000
 const port = 3000;
 
+// Create the HTTP server
 const server = http.createServer();
-const nodemailer = require('nodemailer');
-require('dotenv').config();
-console.log(process.env.DATABASE_URL);
+
+// Import Nodemailer so the server can send receipt emails
+const nodemailer = require("nodemailer");
+
+// Load environment variables from .env
+// This is used for private information like email username/password
+require("dotenv").config();
 
 
+// Main request handler for all incoming browser requests
 server.on("request", function(req, res) {
     console.log("Request for " + req.url);
 
+    // Home page route
+    // Serves the main restaurant dashboard page
     if (req.url === "/") {
         fs.readFile("./html/main.html", function(err, data) {
             if (err) {
@@ -24,19 +37,25 @@ server.on("request", function(req, res) {
         });
     }
 
-    else if(["chicken", "pork", "beef", "seafood"].includes(req.url.substring(1))){
+        // Protein category pages
+        // If the URL is /chicken, /pork, /beef, or /seafood,
+    // serve the matching HTML page from the html folder
+    else if (["chicken", "pork", "beef", "seafood"].includes(req.url.substring(1))) {
         const protein = req.url.substring(1);
-        fs.readFile(`./html/${protein}.html`, function(err, data){
-            if(err){
+
+        fs.readFile(`./html/${protein}.html`, function(err, data) {
+            if (err) {
                 res.writeHead(500, {"Content-Type": "text/plain"});
                 res.end("Server error");
                 return;
             }
-            res.writeHead(200,{"Content-Type": "text/html"});
+
+            res.writeHead(200, {"Content-Type": "text/html"});
             res.end(data);
         });
     }
 
+    // Serves the payment checkout JavaScript file
     else if (req.url === "/js/paymentCheckout.js") {
         fs.readFile("./js/paymentCheckout.js", function(err, data) {
             if (err) {
@@ -50,6 +69,8 @@ server.on("request", function(req, res) {
         });
     }
 
+        // Payment page route
+    // Reads payment.html and inserts the payment summary placeholder
     else if (req.url === "/payment") {
         fs.readFile("./html/payment.html", "utf8", function(err, data) {
             if (err) {
@@ -58,8 +79,11 @@ server.on("request", function(req, res) {
                 return;
             }
 
+            // Creates placeholder subtotal, tax, and total elements
+            // The browser later fills these using localStorage cart data
             const updatedHTML = calculatePayment();
 
+            // Replace placeholder comment in payment.html
             const updatedPage = data.replace("<!-- PAYMENT_SUMMARY -->", updatedHTML);
 
             res.writeHead(200, {"Content-Type": "text/html"});
@@ -67,6 +91,8 @@ server.on("request", function(req, res) {
         });
     }
 
+        // Individual credit card image routes
+    // These are used by the payment page to display the detected card type
     else if (req.url === "/images/visa.png") {
         fs.readFile("./images/visa.png", function(err, data) {
             if (err) {
@@ -119,25 +145,35 @@ server.on("request", function(req, res) {
         });
     }
 
+        // Payment validation route
+    // This receives the submitted payment form using POST
     else if (req.url === "/validate-payment" && req.method === "POST") {
         let body = "";
 
+        // Collect chunks of POST form data
         req.on("data", function(chunk) {
             body += chunk;
         });
 
+        // Once all form data is received, process it
         req.on("end", function() {
             const formData = new URLSearchParams(body);
+
+            // Cart data is sent from localStorage through a hidden form input
             const cartData = formData.get("cartData");
             const cart = JSON.parse(cartData || "[]");
+
+            // Read payment form fields
             const cardNumber = formData.get("cardNumber");
             const expiration = formData.get("expiration");
             const cvv = formData.get("cvv");
             const email = formData.get("email");
 
+            // Validate payment information on the server
             const paymentResult =
                 validatePayment(cardNumber, expiration, cvv, email);
 
+            // If payment is accepted, send the email receipt
             if (paymentResult === "Payment accepted.") {
                 sendReceiptEmail(email, cart, function(err) {
                     if (err) {
@@ -146,12 +182,15 @@ server.on("request", function(req, res) {
                         return;
                     }
 
+                    // Redirect to success page after email sends
                     res.writeHead(302, {
                         "Location": "/success"
                     });
                     res.end();
                 });
             }
+
+            // If validation fails, show an error page
             else {
                 res.writeHead(200, {"Content-Type": "text/html"});
                 res.end(`
@@ -163,19 +202,23 @@ server.on("request", function(req, res) {
         });
     }
 
+        // Success page route
+    // Shown after successful payment and receipt email
     else if (req.url === "/success") {
         fs.readFile("./html/success.html", function(err, data) {
-        if (err) {
-            res.writeHead(404, {"Content-Type": "text/plain"});
-            res.end("Success page not found.");
-            return;
-        }
+            if (err) {
+                res.writeHead(404, {"Content-Type": "text/plain"});
+                res.end("Success page not found.");
+                return;
+            }
 
-        res.writeHead(200, {"Content-Type": "text/html"});
-        res.end(data);
-    });
-}
+            res.writeHead(200, {"Content-Type": "text/html"});
+            res.end(data);
+        });
+    }
 
+        // Cart JavaScript route
+    // Serves the file that displays/removes/clears cart items
     else if (req.url === "/js/cart.js") {
         fs.readFile("./js/cart.js", function(err, data) {
             if (err) {
@@ -189,6 +232,8 @@ server.on("request", function(req, res) {
         });
     }
 
+        // Cart page route
+    // Displays the user's current cart from localStorage
     else if (req.url === "/cart") {
         fs.readFile("./html/cart.html", function(err, data) {
             if (err) {
@@ -202,6 +247,7 @@ server.on("request", function(req, res) {
         });
     }
 
+    // Banner image route
     else if (req.url === "/images/banner.png") {
         fs.readFile("./images/banner.png", function(err, data) {
             if (err) {
@@ -215,6 +261,8 @@ server.on("request", function(req, res) {
         });
     }
 
+        // Menu JSON route
+    // The frontend fetches this file to dynamically display menu items
     else if (req.url === "/menu.json") {
         fs.readFile("./menu.json", "utf8", function(err, data) {
             if (err) {
@@ -227,7 +275,9 @@ server.on("request", function(req, res) {
             res.end(data);
         });
     }
-//Implementing search 
+
+        // Search route
+    // Reads the search term from the query string and serves search.html
     else if (req.url.startsWith("/search")) {
         const urlParts = req.url.split("?");
         const queryString = urlParts[1] || "";
@@ -246,11 +296,16 @@ server.on("request", function(req, res) {
         });
     }
 
+        // Generic image route
+    // Handles any image inside the images folder without needing a separate route for each one
     else if (req.url.startsWith("/images/")) {
         const filePath = "." + req.url;
+
+        // Determine file extension so the correct content type can be returned
         const extension = req.url.substring(req.url.lastIndexOf(".") + 1).toLowerCase();
 
         let contentType = "application/octet-stream";
+
         if (extension === "jpg" || extension === "jpeg") contentType = "image/jpeg";
         else if (extension === "png") contentType = "image/png";
         else if (extension === "webp") contentType = "image/webp";
@@ -268,12 +323,16 @@ server.on("request", function(req, res) {
         });
     }
 
+    // Fallback route for unknown pages
     else {
         res.writeHead(404, {"Content-Type": "text/plain"});
         res.end("Page not found.");
     }
 });
 
+
+// Creates placeholder payment summary elements
+// The actual values are filled in by browser JavaScript using the cart from localStorage
 function calculatePayment() {
     return `
         <p id="paymentSubtotal">Subtotal: $0.00</p>
@@ -282,40 +341,53 @@ function calculatePayment() {
     `;
 }
 
+
+// Validates payment information submitted by the user
+// Returns a success or failure message
 function validatePayment(cardNumber, expiration, cvv, email) {
+    // Remove spaces from the card number before validation
     cardNumber = cardNumber.replaceAll(" ", "");
 
+    // Card number must be 15 or 16 digits
     if (cardNumber.length !== 16 && cardNumber.length !== 15) {
         return "Payment declined: card number must be 15 or 16 digits.";
     }
 
+    // Card number must contain only numbers
     if (isNaN(cardNumber)) {
         return "Payment declined: card number must contain only numbers.";
     }
 
+    // Expiration must be in MM/YY format
     if (expiration.length !== 5 || expiration.charAt(2) !== "/") {
         return "Payment declined: expiration must be in MM/YY format.";
     }
 
+    // Extract month and year from expiration date
     let month = Number(expiration.substring(0, 2));
     let year = Number(expiration.substring(3, 5));
 
+    // Validate month
     if (month < 1 || month > 12) {
         return "Payment declined: invalid expiration month.";
     }
 
+    // Simple expiration year check
     if (year < 26) {
         return "Payment declined: card is expired.";
     }
 
+    // CVV must be 3 or 4 digits
     if (cvv.length !== 3 && cvv.length !== 4) {
         return "Payment declined: CVV must be 3 or 4 digits.";
     }
 
+    // CVV must contain only numbers
     if (isNaN(cvv)) {
         return "Payment declined: CVV must contain only numbers.";
     }
 
+    // Basic email validation
     if (!email || !email.includes("@") || !email.includes(".")) {
         return "Payment declined: invalid email address.";
     }
@@ -323,6 +395,9 @@ function validatePayment(cardNumber, expiration, cvv, email) {
     return "Payment accepted.";
 }
 
+
+// Configure Nodemailer transporter
+// Uses Gmail credentials stored in the .env file
 const transporter = nodemailer.createTransport({
     service: "gmail",
     host: "smtp.gmail.com",
@@ -334,18 +409,24 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+
+// Sends the receipt email after successful payment validation
 function sendReceiptEmail(email, cart, callback) {
     let subtotal = 0;
 
+    // Calculate subtotal from cart item prices and quantities
     for (let i = 0; i < cart.length; i++) {
         subtotal += cart[i].price * cart[i].quantity;
     }
 
+    // Calculate tax and final total
     const tax = subtotal * 0.08875;
     const total = subtotal + tax;
 
+    // Generate a random receipt number
     const receiptID = Math.floor(Math.random() * 10000000);
 
+    // Build the HTML rows for each ordered item
     let itemRows = "";
 
     for (let i = 0; i < cart.length; i++) {
@@ -359,6 +440,7 @@ function sendReceiptEmail(email, cart, callback) {
     `;
     }
 
+    // Email message options
     const mailOptions = {
         from: {
             name: "Restaurant Payment System",
@@ -366,11 +448,14 @@ function sendReceiptEmail(email, cart, callback) {
         },
         to: email,
         subject: "ABC Restaurant Receipt",
+
+        // Plain text fallback email body
         text:
             "Thank you for your order.\n\n" +
             "Your payment was processed successfully.\n" +
             "Total: $" + total.toFixed(2),
 
+        // HTML receipt email body
         html: `
             <div style="max-width:600px; margin:auto; font-family:Arial,sans-serif; border:1px solid #ddd; border-radius:10px; overflow:hidden;">
 
@@ -434,6 +519,7 @@ function sendReceiptEmail(email, cart, callback) {
         `
     };
 
+    // Send the receipt email
     transporter.sendMail(mailOptions, function(err, info) {
         if (err) {
             console.log("Email failed:", err.message);
@@ -441,11 +527,13 @@ function sendReceiptEmail(email, cart, callback) {
             return;
         }
 
-        console.log("Email sent:", mailOptions.email);
+        console.log("Email sent:", info.messageId);
         callback(null);
     });
 }
 
+
+// Start the server
 server.listen(port, function() {
     console.log("Server running at http://localhost:" + port);
 });

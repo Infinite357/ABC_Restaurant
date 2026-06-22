@@ -4,6 +4,7 @@
 <head>
   <title>ABC Restaurant</title>
   <link rel="icon" href="/images/RestrauntLogo.png" type="image/png">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,6 +14,7 @@
       padding: 0;
     }
 
+    /* Menu item image styling */
     .food-img {
       display: block;
       width: 200px;
@@ -22,6 +24,7 @@
       margin: 8px auto 0 auto;
     }
 
+    /* Individual menu card styling */
     .food-card {
       display: inline-block;
       vertical-align: top;
@@ -86,6 +89,7 @@
       padding: 30px;
     }
 
+    /* Small success/error message area for cart actions */
     #cartMessage {
       color: #22c55e;
       font-weight: bold;
@@ -113,6 +117,11 @@
       border-radius: 6px;
     }
 
+    a:hover {
+      background-color: #1d4ed8;
+    }
+
+    /* Floating cart dock item list */
     #cartDockItems {
       margin-top: 10px;
       font-size: 13px;
@@ -128,6 +137,7 @@
       padding-bottom: 4px;
     }
 
+    /* Floating cart dock fixed to bottom-right of page */
     #cartDock {
       position: fixed;
       right: 20px;
@@ -145,15 +155,14 @@
     #cartDock p {
       margin: 6px 0;
     }
-
-    a:hover {
-      background-color: #1d4ed8;
-    }
   </style>
 </head>
 
 <body>
 
+<!-- Floating cart dock.
+     This displays the current cart count, subtotal, and item quantities.
+     It updates whenever the user adds an item to the cart. -->
 <div id="cartDock">
   <p id="cartDockCount">Cart: 0 items</p>
   <p id="cartDockSubtotal">Subtotal: $0.00</p>
@@ -163,74 +172,94 @@
   <a href="/cart">View Cart</a>
 </div>
 
-  <div class="container">
+<div class="container">
 
-    <p id="cartMessage"></p>
+  <!-- Message area used for Add to Cart success messages and checkout errors -->
+  <p id="cartMessage"></p>
 
-    <div class="section">
-      <table width="100%">
-        <tr>
-          <td style="width: 120px;">
-            <img src="/images/RestrauntLogo.png" alt="RestrauntLogo" width="150">
-          </td>
-          <td align="left">
-            <h2 style="font-family: cursive; font-size: 50px;">ABC Restaurant</h2>
-          </td>
-          <td align="right">
-            <form action="/search" method="GET">
+  <!-- Header/search/navigation section -->
+  <div class="section">
+    <table width="100%">
+      <tr>
+        <td style="width: 120px;">
+          <img src="/images/RestrauntLogo.png" alt="Restaurant Logo" width="150">
+        </td>
+
+        <td align="left">
+          <h2 style="font-family: cursive; font-size: 50px;">ABC Restaurant</h2>
+        </td>
+
+        <td align="right">
+          <!-- Search form sends the user's search term to /search -->
+          <form action="/search" method="GET">
             <label for="food"></label>
 
             <input id="food" name="item" type="text" placeholder="Search for food..." />
 
             <input type="submit" value="Search"/>
-            <a href="cart">View Cart</a>
-            <a href="http://localhost:3000/payment" onclick="return canPay()">Fast Checkout</a>
-            </form>
-          </td>
-        </tr>
-      </table>
-    </div>
+          </form>
 
-    <div class="section">
-      <div style="text-align: left;">
-        <a href="/chicken">Chicken</a>
-        <a href="/pork">Pork</a>
-        <a href="/beef">Beef</a>
-        <a href="/seafood">Seafood</a>
-      </div>
-    </div>
-    
-    <div class="section">
-      <h2 style ="text-align: center;">Appetizers</h2>
-      <div id="appitizers-menu" style="text-align: center;"></div>
-    </div>
-
-    <div class="section">
-      <h2 style="text-align: center;">Entrees</h2>
-      <div id="entrees-menu" style="text-align: center;"></div>
-    </div>
-
-    <div class="section">
-      <h2 style="text-align: center;">Sides</h2>
-      <div id="sides-menu" style="text-align: center;"></div>
-    </div>
-
+          <!-- Navigation links.
+               Fast Checkout uses canPay() to prevent checkout with an empty cart. -->
+          <a href="/cart">View Cart</a>
+          <a href="/payment" onclick="return canPay()">Fast Checkout</a>
+        </td>
+      </tr>
+    </table>
   </div>
 
-  <script>
-    let menuData = [];
+  <!-- Category navigation section -->
+  <div class="section">
+    <div style="text-align: left;">
+      <a href="/chicken">Chicken</a>
+      <a href="/pork">Pork</a>
+      <a href="/beef">Beef</a>
+      <a href="/seafood">Seafood</a>
+    </div>
+  </div>
 
-    async function loadMenuItems() {
-      try {
-        const response = await fetch('/menu.json');
-        const menu = await response.json();
+  <!-- Appetizer menu items will be inserted here by JavaScript -->
+  <div class="section">
+    <h2 style="text-align: center;">Appetizers</h2>
+    <div id="appitizers-menu" style="text-align: center;"></div>
+  </div>
 
-        menuData = menu.items;
+  <!-- Entree menu items will be inserted here by JavaScript -->
+  <div class="section">
+    <h2 style="text-align: center;">Entrees</h2>
+    <div id="entrees-menu" style="text-align: center;"></div>
+  </div>
 
-        const appitizersContainer = document.getElementById('appitizers-menu');
-        const appetizers = menuData.filter(item=>item.type === 'appetizer');
+  <!-- Side menu items will be inserted here by JavaScript -->
+  <div class="section">
+    <h2 style="text-align: center;">Sides</h2>
+    <div id="sides-menu" style="text-align: center;"></div>
+  </div>
 
-        appitizersContainer.innerHTML = appetizers.map(item => `
+</div>
+
+<script>
+  // Stores the menu data after it is loaded from menu.json.
+  // addToCart() uses this array to find the selected item.
+  let menuData = [];
+
+  // Loads menu items from menu.json and displays them on the page.
+  async function loadMenuItems() {
+    try {
+      const response = await fetch("/menu.json");
+      const menu = await response.json();
+
+      // Store menu items globally for later use by addToCart().
+      menuData = menu.items;
+
+      // Filter and display appetizer items.
+      const appitizersContainer = document.getElementById("appitizers-menu");
+      const appetizers = menuData.filter(function(item) {
+        return item.type === "appetizer";
+      });
+
+      appitizersContainer.innerHTML = appetizers.map(function(item) {
+        return `
           <div class="food-card">
             <img src="${item.image}" alt="${item.name}" class="food-img">
             <div class="food-card-name">${item.name}</div>
@@ -238,151 +267,174 @@
             <div class="food-card-price">$${item.price.toFixed(2)}</div>
             <button onclick="addToCart('${item.id}')">Add to Cart</button>
           </div>
-        `).join('');
+        `;
+      }).join("");
 
-        const entreesContainer = document.getElementById('entrees-menu');
-        const entrees = menuData.filter(item => item.type === 'entree');
+      // Filter and display entree items.
+      const entreesContainer = document.getElementById("entrees-menu");
+      const entrees = menuData.filter(function(item) {
+        return item.type === "entree";
+      });
 
-        entreesContainer.innerHTML = entrees.map(item => `
-        <div class="food-card">
-          <img src="${item.image}" alt="${item.name}" class="food-img">
-          <div class="food-card-name">${item.name}</div>
-          <div class="food-card-details">${item.calories} cal</div>
-          <div class="food-card-price">$${item.price.toFixed(2)}</div>
-          <button onclick="addToCart('${item.id}')">Add to Cart</button>
-        </div>
-      `).join('');
+      entreesContainer.innerHTML = entrees.map(function(item) {
+        return `
+          <div class="food-card">
+            <img src="${item.image}" alt="${item.name}" class="food-img">
+            <div class="food-card-name">${item.name}</div>
+            <div class="food-card-details">${item.calories} cal</div>
+            <div class="food-card-price">$${item.price.toFixed(2)}</div>
+            <button onclick="addToCart('${item.id}')">Add to Cart</button>
+          </div>
+        `;
+      }).join("");
 
-        const sidesContainer = document.getElementById('sides-menu');
-        const sides = menuData.filter(item => item.type === 'side');
+      // Filter and display side items.
+      const sidesContainer = document.getElementById("sides-menu");
+      const sides = menuData.filter(function(item) {
+        return item.type === "side";
+      });
 
-        sidesContainer.innerHTML = sides.map(item => `
-        <div class="food-card">
-          <img src="${item.image}" alt="${item.name}" class="food-img">
-          <div class="food-card-name">${item.name}</div>
-          <div class="food-card-details">${item.calories} cal</div>
-          <div class="food-card-price">$${item.price.toFixed(2)}</div>
-          <button onclick="addToCart('${item.id}')">Add to Cart</button>
-        </div>
-      `).join('');
+      sidesContainer.innerHTML = sides.map(function(item) {
+        return `
+          <div class="food-card">
+            <img src="${item.image}" alt="${item.name}" class="food-img">
+            <div class="food-card-name">${item.name}</div>
+            <div class="food-card-details">${item.calories} cal</div>
+            <div class="food-card-price">$${item.price.toFixed(2)}</div>
+            <button onclick="addToCart('${item.id}')">Add to Cart</button>
+          </div>
+        `;
+      }).join("");
 
-        console.log("Menu data loaded:", menuData);
+      console.log("Menu data loaded:", menuData);
 
-      } catch (error) {
-        console.error('Error loading menu:', error);
-      }
-
-      updateCartDock();
+    } catch (error) {
+      console.error("Error loading menu:", error);
     }
 
-    function addToCart(itemId) {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    // Update the floating cart dock when the page loads.
+    updateCartDock();
+  }
 
-      const item = menuData.find(function(menuItem) {
-        return String(menuItem.id) === String(itemId);
-      });
+  // Adds a selected menu item to localStorage.
+  // If the item already exists, increase its quantity instead of duplicating it.
+  function addToCart(itemId) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-      if (!item) {
-        console.log("Item not found:", itemId);
-        alert("Item could not be added.");
-        return;
-      }
+    // Find the selected item from the loaded menu data.
+    const item = menuData.find(function(menuItem) {
+      return String(menuItem.id) === String(itemId);
+    });
 
-      const cartItem = cart.find(function(existingItem) {
-        return String(existingItem.id) === String(item.id);
-      });
+    if (!item) {
+      console.log("Item not found:", itemId);
+      alert("Item could not be added.");
+      return;
+    }
 
-      const cartMessage = document.getElementById("cartMessage");
+    // Check whether the item is already in the cart.
+    const cartItem = cart.find(function(existingItem) {
+      return String(existingItem.id) === String(item.id);
+    });
 
+    const cartMessage = document.getElementById("cartMessage");
 
-      if (cartItem) {
-        if (cartItem.quantity < 10)
-      {
-        
+    if (cartItem) {
+      // Limit each item to a maximum quantity of 10.
+      if (cartItem.quantity < 10) {
         cartItem.quantity++;
         cartMessage.textContent = item.name + " added to cart!";
       } else {
-        cartMessage.textContent = " Maximum limit reached!";
+        cartMessage.textContent = "Maximum limit reached!";
       }
-      } else {
-        cart.push({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          calories: item.calories,
-          image: item.image,
-          quantity: 1
-        });
-        cartMessage.textContent = item.name + " added to cart!";
-      }
+    } else {
+      // Add new item to cart.
+      cart.push({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        calories: item.calories,
+        image: item.image,
+        quantity: 1
+      });
 
-      localStorage.setItem("cart", JSON.stringify(cart));
+      cartMessage.textContent = item.name + " added to cart!";
+    }
 
-      updateCartDock();
+    // Save updated cart back into localStorage.
+    localStorage.setItem("cart", JSON.stringify(cart));
 
-      console.log("Cart is now:", cart);
+    // Refresh floating cart dock.
+    updateCartDock();
 
+    console.log("Cart is now:", cart);
 
+    // Clear message after 2 seconds.
+    setTimeout(function() {
+      cartMessage.textContent = "";
+    }, 2000);
+  }
 
-      
+  // Load menu once the page is ready.
+  document.addEventListener("DOMContentLoaded", loadMenuItems);
+
+  // Updates the floating cart dock using cart data from localStorage.
+  function updateCartDock() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    let totalQuantity = 0;
+    let subtotal = 0;
+
+    const cartDockItems = document.getElementById("cartDockItems");
+    cartDockItems.innerHTML = "";
+
+    // Loop through cart to calculate subtotal and display item quantities.
+    for (let i = 0; i < cart.length; i++) {
+      totalQuantity += cart[i].quantity;
+      subtotal += cart[i].price * cart[i].quantity;
+
+      cartDockItems.innerHTML += `
+        <div class="cart-dock-item">
+          <span>${cart[i].name}</span>
+          <span>x${cart[i].quantity}</span>
+        </div>
+      `;
+    }
+
+    document.getElementById("cartDockCount").textContent =
+            "Cart: " + totalQuantity + " items";
+
+    document.getElementById("cartDockSubtotal").textContent =
+            "Subtotal: $" + subtotal.toFixed(2);
+
+    if (cart.length === 0) {
+      cartDockItems.innerHTML = "<p>Your cart is empty.</p>";
+    }
+  }
+
+  // Prevents the user from going to checkout if the cart is empty.
+  // This function is called by the Fast Checkout link.
+  function canPay() {
+    const cart = JSON.parse(localStorage.getItem("cart"));
+
+    if (cart === null || cart.length === 0) {
+      const cartMessage = document.getElementById("cartMessage");
+
+      console.log("Cart is Empty, Cannot Checkout.");
+
+      cartMessage.textContent = "Cart is Empty, Cannot Proceed to Checkout!!";
 
       setTimeout(function() {
         cartMessage.textContent = "";
       }, 2000);
+
+      return false;
+    } else {
+      return true;
     }
+  }
+</script>
 
-    document.addEventListener('DOMContentLoaded', loadMenuItems);
-
-    function updateCartDock() {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-      let totalQuantity = 0;
-      let subtotal = 0;
-
-      const cartDockItems = document.getElementById("cartDockItems");
-      cartDockItems.innerHTML = "";
-
-      for (let i = 0; i < cart.length; i++) {
-        totalQuantity += cart[i].quantity;
-        subtotal += cart[i].price * cart[i].quantity;
-
-        cartDockItems.innerHTML += `
-      <div class="cart-dock-item">
-        <span>${cart[i].name}</span>
-        <span>x${cart[i].quantity}</span>
-      </div>
-    `;
-      }
-
-      document.getElementById("cartDockCount").textContent =
-              "Cart: " + totalQuantity + " items";
-
-      document.getElementById("cartDockSubtotal").textContent =
-              "Subtotal: $" + subtotal.toFixed(2);
-
-      if (cart.length === 0) {
-        cartDockItems.innerHTML = "<p>Your cart is empty.</p>";
-      }
-    }
-    
-    function canPay()
-    {
-      const cart = JSON.parse(localStorage.getItem("cart"));
-      if (cart === null || cart.length === 0)
-      {
-        const cartMessage = document.getElementById("cartMessage");
-        console.log("Cart is Empty, Cannot Checkout.");
-        cartMessage.textContent = "Cart is Empty, Cannot Proceed to Checkout!!";
-        setTimeout(function() {
-          cartMessage.textContent = "";
-        }, 2000);
-        return false;
-      } else {
-        return true;
-      }
-    }
-
-  </script>
 </body>
 
 </html>
